@@ -17,6 +17,6 @@ export namespace VacationGenerate {
 		personalNumber: number
 		lastPromotion: Date
 		name: string
-		vacationMonth: number
+		vacationMonth: string
 	}>
 }
