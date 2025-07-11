@@ -98,14 +98,26 @@ export class VacationGenerateService implements VacationGenerate {
 			}
 		}
 		const vacationListResult = []
-
-		for (const month of months) {
-			for (const [index, allocatedEmployee] of month.employees.entries()) {
+		const listOfMonths = [
+			'Janeiro',
+			'Fevereiro',
+			'Março',
+			'Abril',
+			'Maio',
+			'Junho',
+			'Julho',
+			'Agosto',
+			'Setembro',
+			'Outubro',
+			'Novembro',
+			'Dezembro'
+		]
+		for (const [indexMonth, month] of months.entries()) {
+			for (const allocatedEmployee of month.employees) {
 				const { options, ...employee } = allocatedEmployee
-				vacationListResult.push({ ...employee, vacationMonth: index })
+				vacationListResult.push({ ...employee, vacationMonth: listOfMonths[indexMonth] })
 			}
 		}
-
 		return vacationListResult
 	}
 
