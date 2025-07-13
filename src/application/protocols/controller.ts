@@ -3,8 +3,7 @@ export interface Controller {
 }
 
 export interface HttpRequest {
-	params?: any
-	body?: any
+	file: any
 }
 
 export interface HttpResponse {
@@ -16,6 +15,27 @@ export const success = (data: any): HttpResponse => {
 	return {
 		statusCode: 200,
 		body: data
+	}
+}
+
+export const badRequest = (data: any): HttpResponse => {
+	return {
+		statusCode: 404,
+		body: data
+	}
+}
+
+export const notAcceptable = (error: Error): HttpResponse => {
+	class NotAcceptableError extends Error {
+		constructor(paramName: string) {
+			super(`Not Acceptable: ${paramName}`)
+			this.name = 'NotAcceptableError'
+		}
+	}
+
+	return {
+		statusCode: 406,
+		body: new NotAcceptableError(error.message)
 	}
 }
 
