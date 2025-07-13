@@ -15,41 +15,6 @@ type MonthAllocation = {
 	full: boolean
 }
 
-const list: Employee[] = [
-	{
-		militaryRank: 'SD',
-		personalNumber: 31926,
-		lastPromotion: new Date('2024-11-10'),
-		name: 'J.Sales',
-		options: [7, 8, 6],
-		allocated: false
-	},
-	{
-		militaryRank: 'SD',
-		personalNumber: 31400,
-		lastPromotion: new Date('2024-11-10'),
-		name: 'Costa',
-		options: [7, 0, 6],
-		allocated: false
-	},
-	{
-		militaryRank: 'CB',
-		personalNumber: 27000,
-		lastPromotion: new Date('2024-11-10'),
-		name: 'Henrique',
-		options: [8, 6, 0],
-		allocated: false
-	},
-	{
-		militaryRank: '3SGT',
-		personalNumber: 24000,
-		lastPromotion: new Date('2024-11-10'),
-		name: 'Maciel',
-		options: [8, 6, 0],
-		allocated: false
-	}
-]
-
 export class VacationGenerateService implements VacationGenerate {
 	generate(params: VacationGenerate.Params): VacationGenerate.Result {
 		const allocationList = [...params]
@@ -139,7 +104,3 @@ export class VacationGenerateService implements VacationGenerate {
 		return false
 	}
 }
-
-const generateVacations = new VacationGenerateService()
-const generateResult = generateVacations.generate(list)
-console.log(generateResult)
