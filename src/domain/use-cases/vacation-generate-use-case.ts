@@ -1,18 +1,12 @@
+import { SheetJsAdapter } from '../../infra/adapters/sheetjs-adapter'
 import { VacationGenerateService } from '../../infra/service/vacation-generate-service'
 
 export interface VacationGenerateUseCase {
-	generate(params: VacationGenerateUseCase.Params): VacationGenerateUseCase.Result
+	generate(params: VacationGenerateUseCase.Params): Promise<VacationGenerateUseCase.Result>
 }
 
 export namespace VacationGenerateUseCase {
-	export type Params = Array<{
-		militaryRank: string
-		personalNumber: number
-		lastPromotion: Date
-		name: string
-		options: Array<number>
-		allocated: boolean
-	}>
+	export type Params = string
 
 	export type Result = {
 		isSuccess: boolean
@@ -28,5 +22,6 @@ export namespace VacationGenerateUseCase {
 
 	export type Dependencies = {
 		vacationGenerateService: VacationGenerateService
+		parse: SheetJsAdapter
 	}
 }
