@@ -10,6 +10,7 @@ export namespace VacationGenerateUseCase {
 
 	export type Result = {
 		isSuccess: boolean
+		filePath: string
 		data?: Array<{
 			militaryRank: string
 			personalNumber: number
