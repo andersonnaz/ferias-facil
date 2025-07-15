@@ -5,7 +5,13 @@ export interface ExportToExcel {
 export namespace ExportToExcel {
 	export type Param = {
 		filePath: string
-		data: any[]
+		data: Array<{
+			militaryRank: string
+			personalNumber: number
+			lastPromotion: Date
+			name: string
+			vacationMonth: string
+		}>
 	}
-	export type Result = any
+	export type Result = void
 }
