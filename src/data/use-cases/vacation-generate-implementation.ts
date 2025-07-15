@@ -14,10 +14,10 @@ export class VacationGenerateImplementation implements VacationGenerateUseCase {
 	async generate(filePath: VacationGenerateUseCase.Params): Promise<VacationGenerateUseCase.Result> {
 		const vacationList = await this.parse.toJson(filePath)
 		const vacationGenerateResult = this.vacationGenerateService.generate(vacationList)
-		const vacationListExportedToExcel = await this.parse.toExcel({ filePath, data: vacationGenerateResult })
+		await this.parse.toExcel({ filePath, data: vacationGenerateResult })
 		return {
 			isSuccess: true,
-			data: vacationListExportedToExcel
+			filePath
 		}
 	}
 }
