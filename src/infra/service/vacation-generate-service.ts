@@ -95,11 +95,13 @@ export class VacationGenerateService implements VacationGenerate {
 		if (firstEmployeeIndexRank > secondEmployeeIndexRank) {
 			return true
 		}
-		if (firstEmployee.lastPromotion < secondEmployee.lastPromotion) {
-			return true
-		}
-		if (firstEmployee.personalNumber < secondEmployee.personalNumber) {
-			return true
+		if (firstEmployeeIndexRank === secondEmployeeIndexRank) {
+			if (firstEmployee.lastPromotion < secondEmployee.lastPromotion) {
+				return true
+			}
+			if (firstEmployee.personalNumber < secondEmployee.personalNumber) {
+				return true
+			}
 		}
 		return false
 	}
