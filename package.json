@@ -5,6 +5,8 @@
   "main": "index.js",
   "scripts": {
     "dev": "sucrase-node src/main/server.ts",
+	 "build": "rimraf dist && tsc -p tsconfig.json",
+	 "start": "node dist/main/server.js",
     "test": "jest --passWithNoTests --silent --noStackTrace --runInBand",
     "test:verbose": "jest --passWithNoTests --runInBand",
     "test:unit": "pnpm run test --watchAll -c ./jest-unit-config.js",
