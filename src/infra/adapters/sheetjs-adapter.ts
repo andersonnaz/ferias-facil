@@ -1,7 +1,12 @@
 import { ParseToJson } from '../../data/protocols/service/parse-excel-to-json'
 import { ExportToExcel } from '../../data/protocols/service/export-to-excel'
 import * as XLXS from 'xlsx'
+import { InvalidParamError } from '../../application/errors/invalid-param-error'
 
+interface ValidationResult {
+	isValid: boolean
+	error?: Error
+}
 interface EmployeeDataPortuguese {
 	graduacao: string
 	numeral: number
@@ -13,11 +18,34 @@ interface EmployeeDataPortuguese {
 }
 
 export class SheetJsAdapter implements ExportToExcel, ParseToJson {
+	private readonly listOfMonths = [
+		'janeiro',
+		'fevereiro',
+		'março',
+		'abril',
+		'maio',
+		'junho',
+		'julho',
+		'agosto',
+		'setembro',
+		'outubro',
+		'novembro',
+		'dezembro'
+	]
+	private readonly militaryRank = ['SD', 'CB', '3SGT', '2SGT', '1SGT', 'ST']
+
 	async toJson(filePath: ParseToJson.Param): Promise<ParseToJson.Result> {
 		const workbook = await XLXS.readFile(filePath)
 		const sheetName = workbook.SheetNames[0]
 		const sheet = workbook.Sheets[sheetName]
 		const vacationList = XLXS.utils.sheet_to_json<EmployeeDataPortuguese>(sheet)
+		const validationResult = this.validation(vacationList)
+		if (!validationResult.isValid) {
+			return {
+				isValid: false,
+				error: validationResult.error
+			}
+		}
 		const vacationListEmployees = vacationList.map((employee) => {
 			if (!employee.ultimaPromocao) {
 				employee.ultimaPromocao = new Date(0)
@@ -35,7 +63,10 @@ export class SheetJsAdapter implements ExportToExcel, ParseToJson {
 				allocated: false
 			}
 		})
-		return vacationListEmployees
+		return {
+			isValid: true,
+			data: vacationListEmployees
+		}
 	}
 
 	async toExcel({ filePath, data }: ExportToExcel.Param): Promise<ExportToExcel.Result> {
@@ -64,20 +95,38 @@ export class SheetJsAdapter implements ExportToExcel, ParseToJson {
 	}
 
 	private parseMonthToNumber(month: string): number {
-		const listOfMonths = [
-			'janeiro',
-			'fevereiro',
-			'março',
-			'abril',
-			'maio',
-			'junho',
-			'julho',
-			'agosto',
-			'setembro',
-			'outubro',
-			'novembro',
-			'dezembro'
-		]
-		return listOfMonths.findIndex((element) => element === month.toLowerCase())
+		return this.listOfMonths.findIndex((element) => element === month.toLowerCase())
+	}
+
+	private validation(employees: EmployeeDataPortuguese[]): ValidationResult {
+		employees.map((employee) => {
+			if (!this.militaryRank.includes(employee.graduacao.toUpperCase())) {
+				return {
+					isValid: false,
+					error: new InvalidParamError(employee.graduacao)
+				}
+			}
+			if (!this.listOfMonths.includes(employee.opcao1.toLowerCase())) {
+				return {
+					isValid: false,
+					error: new InvalidParamError(employee.opcao1)
+				}
+			}
+			if (!this.listOfMonths.includes(employee.opcao2.toLowerCase())) {
+				return {
+					isValid: false,
+					error: new InvalidParamError(employee.opcao2)
+				}
+			}
+			if (!this.listOfMonths.includes(employee.opcao3.toLowerCase())) {
+				return {
+					isValid: false,
+					error: new InvalidParamError(employee.opcao3)
+				}
+			}
+		})
+		return {
+			isValid: true
+		}
 	}
 }

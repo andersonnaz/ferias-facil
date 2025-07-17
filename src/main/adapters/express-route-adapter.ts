@@ -8,9 +8,9 @@ export const adaptRoute = (controller: Controller) => {
 			file: request.file
 		}
 		const httpResponse: HttpResponse = await controller.handle(httpRequest)
-		response.status(httpResponse.statusCode).download(httpResponse.body.filePath)
+		response.status(httpResponse.statusCode).download(httpResponse.body)
 		response.on('finish', () =>
-			fs.unlink(httpResponse.body.filePath, (error) => {
+			fs.unlink(httpResponse.body, (error) => {
 				if (error) {
 					console.error('cant delete file')
 				}

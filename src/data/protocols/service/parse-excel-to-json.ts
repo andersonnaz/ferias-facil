@@ -6,5 +6,9 @@ export interface ParseToJson {
 
 export namespace ParseToJson {
 	export type Param = string
-	export type Result = Employee[]
+	export type Result = {
+		isValid: boolean
+		data?: Employee[]
+		error?: Error
+	}
 }

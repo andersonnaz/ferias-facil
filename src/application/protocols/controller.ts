@@ -25,31 +25,16 @@ export const badRequest = (data: any): HttpResponse => {
 	}
 }
 
-export const notAcceptable = (error: Error): HttpResponse => {
-	class NotAcceptableError extends Error {
-		constructor(paramName: string) {
-			super(`Not Acceptable: ${paramName}`)
-			this.name = 'NotAcceptableError'
-		}
-	}
-
+export const invalidParamError = (error: Error): HttpResponse => {
 	return {
 		statusCode: 406,
-		body: new NotAcceptableError(error.message)
+		body: error
 	}
 }
 
 export const serverError = (error: Error): HttpResponse => {
-	class ServerError extends Error {
-		constructor(stack: string) {
-			super('Internal Server Error')
-			this.name = 'Server Error'
-			this.stack = stack
-		}
-	}
-
 	return {
 		statusCode: 500,
-		body: new ServerError(error.stack as string)
+		body: error
 	}
 }
